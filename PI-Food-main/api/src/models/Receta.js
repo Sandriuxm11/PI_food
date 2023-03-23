@@ -19,15 +19,15 @@ module.exports = (sequelize) => {
       allowNull: false,
       unique: true
     },
-    resumen_plato: {
+    resumen: {
       type: DataTypes.TEXT,
       allowNull: false,
     },
-    nivel_saludable: {
+    nivelSaludable: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    paso_paso: {
+    preparacion: {
       type: DataTypes.TEXT,
       allowNull: false,
     }
