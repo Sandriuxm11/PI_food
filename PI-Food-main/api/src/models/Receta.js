@@ -27,10 +27,17 @@ module.exports = (sequelize) => {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+    ingredientes:{
+      type: DataTypes.TEXT
+    },
     preparacion: {
       type: DataTypes.TEXT,
       allowNull: false,
-    }
+    },
+    created:{
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+    },
   },{
   timestamps:false
 });

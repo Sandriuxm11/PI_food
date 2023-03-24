@@ -1,29 +1,41 @@
+const { createRecipe, getRecipeById, searchByName, getAllrecipes } = require ("../controllers/recipeController");
+
 const getRecipes = (req, res) => {
     const { name } = req.query;
 
-    if(name){
-        res.status(200).send(`Busco las recetas con nombre ${name}`);
+    if(name) {
+        searchByName(name);
+        // res.status(200).send(`Busco las recetas con nombre ${name}`);
     }
     else{
-        res.status(200).send("Busco todas las recetas");
+        const todos = getAllrecipes();
+        res.status(200).json({todos});
     }
 };
 
-const getRecipesById = (req, res) => {
+const getRecipesById = async (req, res) => {
     const { id } = req.params;
-
-    res.status(200).send(`Envía las recetas con ID ${id}`);
+    const source = isNaN(id) ? "bdd" : "api";
+    
+    try{
+        const recipe = await getRecipeById(id, source);
+        res.status(200).json({recipe});
+    }
+    catch(err){
+        res.status(400).json({error: err.message});
+    }
 };
 
-const createNewRecipe = (req, res) => {
+const createNewRecipe = async (req, res) => {
     const { nombre, imagen, resumen, nivelSaludable, preparacion } = req.body;
-    res.status(200).send(`Crearé una receta con los siguientes datos:
-    nombre: ${nombre},
-    imagen: ${imagen}, 
-    resumen: ${resumen}, 
-    nivelSaludable: ${nivelSaludable},
-    preparacion: ${preparacion} 
-    `);
+
+    try{
+        const newRecipe = await createRecipe(nombre, imagen, resumen, nivelSaludable, preparacion);
+        return res.status(201).json({newRecipe});
+    }
+    catch(err){
+        res.status(400).json({error: err.message});
+    }
 };
 
 module.exports = {
